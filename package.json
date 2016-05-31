@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "start": "parallelshell 'npm run serve -s' 'npm run live-reload-server -s' 'npm run watch -s'",
+    "serve": "http-server ./dist -p 8080 -a 127.0.0.1 --silent",
+    "live-reload-server": "node ./tiny-lr.js > /dev/null",
+    "build:html": "cp ./src/index.html dist/",
+    "build:js": "babel ./src/main.js -o ./dist/main.js",
+    "watch": "parallelshell 'npm run watch:html -s' 'npm run watch:js -s' 'npm run watch:dist -s'",
+    "watch:html": "chokidar './src/index.html' --silent --command 'npm run build:html'",
+    "watch:js": "chokidar './src/**/*.js' --silent --command 'npm run build:js'",
+    "watch:dist": "parallelshell 'npm run watch:dist:html' 'npm run watch:dist:js'",
+    "watch:dist:html": "chokidar './dist/index.html' --silent --command 'curl -s http://127.0.0.1:35729/changed?files=index.html'",
+    "watch:dist:js": "chokidar './dist/main.js' --silent --command 'curl -s http://127.0.0.1:35729/changed?files=main.js'"
+  },
+  "devDependencies": {
+    "babel-cli": "6.9.0",
+    "chokidar-cli": "1.2.0",
+    "parallelshell": "2.0.0",
+    "tiny-lr": "0.2.1"
+  }
+}
