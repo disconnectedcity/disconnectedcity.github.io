@@ -3,13 +3,19 @@
   "private": true,
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {},
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --progress --env.profile=development --hot"
+  },
   "author": "Antti Rautanen <antti.v.j.rautanen@gmail.com>",
   "license": "ISC",
   "homepage": "https://disconnectedcity.github.io",
   "repository": "git@github.com:disconnectedcity/disconnectedcity.github.io.git",
   "devDependencies": {
-    "webpack": "2.6.1"
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "html-webpack-plugin": "^2.28.0",
+    "webpack": "2.6.1",
+    "webpack-dev-server": "^2.4.5"
   }
 }
