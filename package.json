@@ -7,5 +7,9 @@
   "scripts": {},
   "author": "Antti Rautanen <antti.v.j.rautanen@gmail.com>",
   "license": "ISC",
-  "homepage": "https://disconnectedcity.github.io"
+  "homepage": "https://disconnectedcity.github.io",
+  "repository": "git@github.com:disconnectedcity/disconnectedcity.github.io.git",
+  "devDependencies": {
+    "webpack": "2.6.1"
+  }
 }
