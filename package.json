@@ -1,0 +1,11 @@
+{
+  "name": "disconnectedcity.github.io",
+  "private": true,
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Antti Rautanen <antti.v.j.rautanen@gmail.com>",
+  "license": "ISC",
+  "homepage": "https://disconnectedcity.github.io"
+}
