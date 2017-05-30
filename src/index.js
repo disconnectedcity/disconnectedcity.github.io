@@ -21,45 +21,18 @@ class Vehicle {
   constructor(startingNode) {
     this.x = startingNode.x
     this.y = startingNode.y
-    this.velocity = 1
     this.isCurrentlyAtNode = true
     this.currentNode = startingNode
   }
 
   update() {
     if (this.isCurrentlyAtNode) {
-      if (this.currentNode.exits.length === 1) {
-        this.isCurrentlyAtNode = false
-        this.currentLane = this.chooseExit()
-        console.log('exit to lane', this.currentLane)
-      } else {
-        console.log('check exits for node', this.currentNode)
-      }
+      this.isCurrentlyAtNode = false
+      this.currentLane = this.chooseExit()
     } else {
-      let nextX
-      if (this.x > this.currentLane.exitNode.x) {
-        console.log('go left')
-        nextX = this.x - this.velocity
-      } else if (this.x < this.currentLane.exitNode.x) {
-        console.log('go right')
-        nextX = this.x + this.velocity
-      } else {
-        nextX = this.x
-      }
+      const {x: nextX, y: nextY} = getNextPosition({x: this.x, y: this.y}, {x: this.currentLane.exitNode.x, y: this.currentLane.exitNode.y}, this.velocity)
 
-      let nextY
-      if (this.y > this.currentLane.exitNode.y) {
-        console.log('go down')
-        nextY = this.y - this.velocity
-      } else if (this.y < this.currentLane.exitNode.y) {
-        console.log('go up')
-        nextY = this.y + this.velocity
-      } else {
-        nextY = this.y
-      }
-
-      if (nextX === this.x && nextY === this.y) {
-        console.log('arrived to lane\'s end')
+      if (isWithinOnePixelFrom({x: nextX, y: nextY}, {x: this.currentLane.exitNode.x, y: this.currentLane.exitNode.y})) {
         this.isCurrentlyAtNode = true
         this.currentNode = this.currentLane.exitNode
       }
@@ -74,22 +47,66 @@ class Vehicle {
   }
 
   draw(context) {
-    context.fillStyle = '#f00'
     const drawingX = 200 + this.x
     const drawingY = 200 - this.y
     context.fillRect(drawingX, drawingY, 20, 30)
   }
 }
 
+function getAngleBetweenPoints(startPosition, targetPosition) {
+  /**
+   * https://gist.github.com/conorbuck/2606166
+   * right 0
+   * down 4.71238898038469
+   * left 3.141592653589793
+   * up 1.5707963267948966
+   */
+  let angle = Math.atan2(targetPosition.y - startPosition.y, targetPosition.x - startPosition.x)
+  if (angle < 0) angle += 2 * Math.PI
+  return angle
+}
+
+function getNextPosition(currentPosition, targetPosition, velocity) {
+  const angle = getAngleBetweenPoints(currentPosition, targetPosition)
+  return {
+    x: currentPosition.x + Math.cos(angle) * velocity,
+    y: currentPosition.y + Math.sin(angle) * velocity
+  }
+}
+
+function isWithinOnePixelFrom(positionA, positionB) {
+  let isXPositionWithinOnePixel = positionA.x - positionB.x < 1
+  let isYPositionWithinOnePixel = positionA.y - positionB.y < 1
+  return isXPositionWithinOnePixel && isYPositionWithinOnePixel
+}
+
+
+
 class FireTruck extends Vehicle {
   constructor(startingNode) {
     super(startingNode)
+    this.velocity = 1.1
+  }
+
+  update() {
+    super.update()
+  }
+
+  draw(context) {
+    context.fillStyle = '#a00'
+    super.draw(context)
   }
 }
 
 class Car extends Vehicle {
   constructor(startingNode) {
     super(startingNode)
+    this.velocity = 1
+  }
+
+  draw(context) {
+    context.fillStyle = '#888'
+    super.draw(context)
   }
 }
 
